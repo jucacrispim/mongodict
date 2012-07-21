@@ -9,14 +9,13 @@ import setup_commands
 @patch.object(setup_commands, 'glob', Mock())
 class Test3kTestCase(TestCase):
     def setUp(self):
-        dist_mock = Mock(spec=Distribution)
-        dist_mock.verbose = Mock()
-        self.test3k = setup_commands.Test3k(dist_mock)
+        setup_commands.Test3k.__init__ = Mock(return_value=None)
+        self.test3k = setup_commands.Test3k()
+        self.test3k.distribution = Mock()
 
     @patch.object(setup_commands, 'cmd2to3', Mock())
     def test_fix_2to3(self):
         # Tests if 2to3 is called correctly
-
         setup_commands.glob.return_value = ['test_a.py', 'test_b.py']
         self.test3k.fix_2to3()
 
