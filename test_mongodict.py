@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import sys
 import unittest
 from collections import MutableMapping
 import pymongo
@@ -83,7 +84,7 @@ class TestMongoDict(unittest.TestCase):
         self.assertEqual(set(keys), set(expected_keys))
         self.assertEqual(set(my_dict.keys()), set(expected_keys))
         results = []
-        for key, value in my_dict.iteritems():
+        for key, value in my_dict.items():
             results.append((key, value))
         values = [x[1] for x in results]
         expected_values = list(range(10))
@@ -115,7 +116,11 @@ class TestMongoDict(unittest.TestCase):
 
     def test_non_unicode_strings(self):
         my_dict = MongoDict()
-        string_1 = u'Álvaro Justen'.encode('iso-8859-15')
+        if sys.version < '3':
+            string_1 = unicode('Álvaro Justen').encode('iso-8859-15')
+        else:
+            string_1 = 'Álvaro Justen'.encode('iso-8859-15')
+
         with self.assertRaises(UnicodeError):
             my_dict[string_1] = 123
         with self.assertRaises(UnicodeError):
