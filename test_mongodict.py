@@ -117,7 +117,8 @@ class TestMongoDict(unittest.TestCase):
     def test_non_unicode_strings(self):
         my_dict = MongoDict()
         if sys.version < '3':
-            string_1 = unicode('Álvaro Justen').encode('iso-8859-15')
+            string_1 = unicode('Álvaro Justen'.decode('utf-8'))\
+                .encode('iso-8859-15')
         else:
             string_1 = 'Álvaro Justen'.encode('iso-8859-15')
 
