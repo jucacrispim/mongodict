@@ -46,7 +46,7 @@ class MongoDict(MutableMapping):
         return self._collection.find().count()
 
     def __iter__(self):
-        results = self._collection.find({}, {'_id': 1})
+        results = self._collection.find({}, {'_id': 1}).batch_size(25)
         for result in results:
             yield result['_id']
 
